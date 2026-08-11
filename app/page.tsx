@@ -52,6 +52,7 @@ export default function Home() {
           </h2>
 
           <p className="mt-5 text-gray-600 text-lg">
+            เปรมมี่
             สั่งอาหารออนไลน์ง่าย ๆ
             สดใหม่ทุกวัน พร้อมบริการจัดส่งรวดเร็ว
           </p>
