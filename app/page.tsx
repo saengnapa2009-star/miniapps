@@ -1,132 +1,120 @@
 import Image from "next/image";
 
-const products = [
+const foods = [
   {
-    name: "Chanel Luxury Perfume",
-    price: "1,990 บาท",
-    image: "/images/perfume1.jpg",
+    name: "เบอร์เกอร์เนื้อพรีเมียม",
+    price: "129 บาท",
+    image: "/food/burger.jpg",
   },
   {
-    name: "Premium Rose Perfume",
-    price: "1,490 บาท",
-    image: "/images/perfume2.jpg",
+    name: "พิซซ่าชีสเยิ้ม",
+    price: "199 บาท",
+    image: "/food/pizza.jpg",
   },
   {
-    name: "Classic Fashion Bag",
-    price: "2,590 บาท",
-    image: "/images/bag1.jpg",
-  },
-  {
-    name: "Elegant Mini Bag",
-    price: "1,990 บาท",
-    image: "/images/bag2.jpg",
+    name: "ซูชิญี่ปุ่น",
+    price: "159 บาท",
+    image: "/food/sushi.jpg",
   },
 ];
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-[#fff8f6]">
+    <div className="min-h-screen bg-orange-50">
 
-      {/* Header */}
-      <header className="flex justify-between items-center px-10 py-5 bg-white shadow">
-        <h1 className="text-3xl font-bold text-pink-600">
-          LUXE SHOP
+      {/* Navbar */}
+      <nav className="flex justify-between items-center px-10 py-5 bg-white shadow">
+        <h1 className="text-3xl font-bold text-orange-500">
+          🍔 Foodie
         </h1>
 
-        <nav className="space-x-6">
-          <a>หน้าแรก</a>
-          <a>น้ำหอม</a>
-          <a>กระเป๋า</a>
-          <a>โปรโมชั่น</a>
-        </nav>
-      </header>
+        <div className="flex gap-6 text-gray-700">
+          <span>หน้าแรก</span>
+          <span>เมนูอาหาร</span>
+          <span>โปรโมชั่น</span>
+          <span>ติดต่อเรา</span>
+        </div>
+
+        <button className="bg-orange-500 text-white px-5 py-2 rounded-full">
+          🛒 ตะกร้า
+        </button>
+      </nav>
 
 
-      {/* Banner */}
+      {/* Hero Section */}
       <section className="grid md:grid-cols-2 gap-10 px-10 py-16 items-center">
 
         <div>
-          <h2 className="text-6xl font-bold">
-            Luxury Perfume
+          <h2 className="text-5xl font-bold text-gray-900 leading-tight">
+            อาหารอร่อย
             <br />
-            & Fashion Bag
+            ส่งตรงถึงบ้านคุณ
           </h2>
 
           <p className="mt-5 text-gray-600 text-lg">
-            ร้านค้าออนไลน์จำหน่ายน้ำหอมและกระเป๋า
-            ดีไซน์หรู คุณภาพพรีเมียม
+            สั่งอาหารออนไลน์ง่าย ๆ
+            สดใหม่ทุกวัน พร้อมบริการจัดส่งรวดเร็ว
           </p>
 
-          <button className="mt-8 bg-pink-600 text-white px-8 py-3 rounded-full">
-            เลือกซื้อสินค้า
+          <button className="mt-8 bg-orange-500 text-white px-8 py-3 rounded-full text-lg hover:bg-orange-600">
+            สั่งอาหารเลย
           </button>
         </div>
 
 
-        <div className="relative h-[450px] rounded-3xl overflow-hidden">
-
-          <Image
-            src="/images/hero.jpg"
-            alt="สินค้าแฟชั่น"
-            fill
-            className="object-cover"
-          />
-
-        </div>
+        <Image
+          src="/food/banner.jpg"
+          alt="food banner"
+          width={600}
+          height={400}
+          className="rounded-3xl shadow-lg"
+        />
 
       </section>
 
 
 
-      {/* Product */}
-      <section className="px-10 py-10">
+      {/* Menu */}
+      <section className="px-10 pb-20">
 
-        <h2 className="text-4xl font-bold text-center mb-10">
-          สินค้าแนะนำ
+        <h2 className="text-3xl font-bold mb-8">
+          🍽 เมนูยอดนิยม
         </h2>
 
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid md:grid-cols-3 gap-8">
 
-          {products.map((item)=>(
-            
+          {foods.map((food,index)=>(
+
             <div
-              key={item.name}
-              className="bg-white rounded-3xl shadow hover:shadow-xl transition overflow-hidden"
+              key={index}
+              className="bg-white rounded-3xl shadow hover:scale-105 transition p-5"
             >
 
-              <div className="relative h-72">
-
-                <Image
-                  src={item.image}
-                  alt={item.name}
-                  fill
-                  className="object-cover"
-                />
-
-              </div>
+              <Image
+                src={food.image}
+                alt={food.name}
+                width={350}
+                height={250}
+                className="rounded-2xl w-full h-56 object-cover"
+              />
 
 
-              <div className="p-5">
-
-                <h3 className="font-bold text-lg">
-                  {item.name}
-                </h3>
+              <h3 className="text-xl font-bold mt-4">
+                {food.name}
+              </h3>
 
 
-                <p className="text-pink-600 text-xl mt-3 font-bold">
-                  {item.price}
-                </p>
+              <p className="text-orange-500 font-bold mt-2">
+                {food.price}
+              </p>
 
 
-                <button
-                  className="mt-5 w-full bg-black text-white py-3 rounded-full hover:bg-pink-600"
-                >
-                  เพิ่มลงตะกร้า
-                </button>
-
-
-              </div>
+              <button
+                className="mt-4 w-full bg-orange-500 text-white py-2 rounded-full"
+              >
+                เพิ่มลงตะกร้า
+              </button>
 
             </div>
 
@@ -137,21 +125,11 @@ export default function Home() {
       </section>
 
 
-
       {/* Footer */}
-      <footer className="bg-black text-white text-center py-8 mt-10">
-
-        <h2 className="text-2xl font-bold">
-          LUXE SHOP
-        </h2>
-
-        <p>
-          Perfume & Bag Online Store
-        </p>
-
+      <footer className="bg-gray-900 text-white text-center py-6">
+        © 2026 Foodie Online Restaurant
       </footer>
 
-
-    </main>
+    </div>
   );
 }
