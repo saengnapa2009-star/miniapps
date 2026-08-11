@@ -1,50 +1,93 @@
-import Image from "next/image";
+```tsx
+"use client";
+
+import { useState } from "react";
 
 const products = [
   {
-    name: "Gucci Bloom",
-    category: "น้ำหอม",
-    price: "฿4,990",
-    image: "/products/gucci1.webp",
-  },
-  {
-    name: "Gucci Bloom Floral",
+    id: 1,
+    name: "Chanel Classic Perfume",
     category: "น้ำหอม",
     price: "฿3,990",
-    image: "/products/gucci2.jpg",
+    image:
+      "https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=800&q=80",
   },
   {
-    name: "Gucci Bloom Eau de Toilette",
+    id: 2,
+    name: "Luxury Rose Perfume",
     category: "น้ำหอม",
-    price: "฿4,290",
-    image: "/products/gucci3.jpg",
+    price: "฿2,590",
+    image:
+      "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    id: 3,
+    name: "Elegant Leather Bag",
+    category: "กระเป๋า",
+    price: "฿4,590",
+    image:
+      "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    id: 4,
+    name: "Classic Women's Bag",
+    category: "กระเป๋า",
+    price: "฿3,290",
+    image:
+      "https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?auto=format&fit=crop&w=800&q=80",
   },
 ];
 
 export default function Home() {
+  const [category, setCategory] = useState("ทั้งหมด");
+
+  const filteredProducts =
+    category === "ทั้งหมด"
+      ? products
+      : products.filter((product) => product.category === category);
+
   return (
-    <main className="min-h-screen bg-[#faf8f6]">
+    <div className="min-h-screen bg-[#faf8f5] text-zinc-900">
 
-      {/* Header */}
-      <header className="border-b bg-white">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
-          <h1 className="text-2xl font-bold tracking-[0.2em]">
-            LUMIÈRE
-          </h1>
+      {/* Navbar */}
+      <header className="sticky top-0 z-50 border-b border-black/5 bg-white/90 backdrop-blur-md">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4">
 
-          <nav className="hidden gap-8 md:flex">
-            <a href="#">หน้าแรก</a>
-            <a href="#products">น้ำหอม</a>
-            <a href="#products">กระเป๋า</a>
-            <a href="#products">สินค้า</a>
+          {/* Logo */}
+          <div>
+            <h1 className="text-2xl font-bold tracking-[0.25em]">
+              LUMIÈRE
+            </h1>
+            <p className="text-[10px] tracking-[0.35em] text-zinc-500">
+              PERFUME & BAG
+            </p>
+          </div>
+
+          {/* Menu */}
+          <nav className="hidden gap-8 text-sm font-medium md:flex">
+            <a href="#" className="hover:text-amber-700">
+              หน้าแรก
+            </a>
+            <a href="#perfume" className="hover:text-amber-700">
+              น้ำหอม
+            </a>
+            <a href="#bag" className="hover:text-amber-700">
+              กระเป๋า
+            </a>
+            <a href="#promotion" className="hover:text-amber-700">
+              โปรโมชั่น
+            </a>
           </nav>
 
-          <div className="flex gap-3">
-            <button className="h-10 w-10 rounded-full border">
+          {/* Icons */}
+          <div className="flex items-center gap-4">
+            <button className="text-xl hover:scale-110 transition">
               🔍
             </button>
-
-            <button className="h-10 w-10 rounded-full border">
+            <button className="text-xl hover:scale-110 transition">
+              ♡
+            </button>
+            <button className="text-xl hover:scale-110 transition">
               🛍️
             </button>
           </div>
@@ -52,41 +95,54 @@ export default function Home() {
       </header>
 
       {/* Hero */}
-      <section className="mx-auto max-w-7xl px-5 py-6">
-        <div className="relative h-[500px] overflow-hidden rounded-[30px]">
+      <section className="mx-auto max-w-7xl px-5 pt-8">
+        <div className="relative overflow-hidden rounded-3xl bg-[#e9e0d5]">
 
-          <Image
-            src="/products/gucci1.webp"
-            alt="Gucci Bloom"
-            fill
-            priority
-            className="object-cover"
-            sizes="100vw"
-          />
+          <div className="grid min-h-[520px] items-center md:grid-cols-2">
 
-          <div className="absolute inset-0 bg-black/35" />
-
-          <div className="relative z-10 flex h-full items-center px-10 text-white md:px-16">
-
-            <div>
-              <p className="mb-4 text-sm uppercase tracking-[0.3em]">
-                Gucci Bloom Collection
+            {/* Text */}
+            <div className="z-10 px-8 py-16 md:px-16">
+              <p className="mb-4 text-sm font-semibold tracking-[0.3em] text-amber-800">
+                NEW COLLECTION 2026
               </p>
 
-              <h2 className="text-5xl font-bold md:text-6xl">
-                GUCCI
+              <h2 className="max-w-xl text-4xl font-semibold leading-tight md:text-6xl">
+                Elegance
                 <br />
-                BLOOM
+                <span className="font-light italic">
+                  in every detail.
+                </span>
               </h2>
 
-              <p className="mt-5 max-w-md">
-                ค้นพบเสน่ห์แห่งกลิ่นหอมจาก Gucci Bloom
-                น้ำหอมที่ถ่ายทอดความเป็นผู้หญิงและความหรูหรา
+              <p className="mt-6 max-w-md leading-7 text-zinc-600">
+                ค้นพบคอลเลกชันน้ำหอมและกระเป๋าสุดหรู
+                ที่ออกแบบมาเพื่อเติมเต็มสไตล์และความมั่นใจของคุณ
               </p>
 
-              <button className="mt-7 rounded-full bg-white px-8 py-3 font-semibold text-black">
-                ช้อปเลย
-              </button>
+              <div className="mt-8 flex gap-4">
+                <a
+                  href="#products"
+                  className="rounded-full bg-black px-7 py-3 text-sm font-medium text-white transition hover:bg-zinc-700"
+                >
+                  ช้อปสินค้า
+                </a>
+
+                <a
+                  href="#promotion"
+                  className="rounded-full border border-black px-7 py-3 text-sm font-medium transition hover:bg-black hover:text-white"
+                >
+                  ดูโปรโมชั่น
+                </a>
+              </div>
+            </div>
+
+            {/* Hero Image */}
+            <div className="relative h-[350px] md:h-full">
+              <img
+                src="https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=1200&q=85"
+                alt="Luxury perfume"
+                className="h-full w-full object-cover"
+              />
             </div>
 
           </div>
@@ -94,71 +150,62 @@ export default function Home() {
       </section>
 
       {/* Category */}
-      <section className="mx-auto max-w-7xl px-5 py-12">
-
+      <section className="mx-auto max-w-7xl px-5 py-16">
         <div className="mb-8 text-center">
-          <p className="text-sm tracking-[0.25em] text-[#a77b52]">
-            COLLECTION
+          <p className="text-xs font-semibold tracking-[0.3em] text-amber-700">
+            SHOP BY CATEGORY
           </p>
 
-          <h2 className="mt-2 text-3xl font-bold">
-            เลือกสิ่งที่ใช่สำหรับคุณ
+          <h2 className="mt-2 text-3xl font-semibold">
+            เลือกช้อปตามหมวดหมู่
           </h2>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-2">
+        <div className="grid gap-5 md:grid-cols-2">
 
           {/* Perfume */}
-          <div className="relative h-72 overflow-hidden rounded-3xl">
-
-            <Image
-              src="/products/gucci2.jpg"
-              alt="Gucci Bloom Perfume"
-              fill
-              className="object-cover"
+          <a
+            href="#products"
+            onClick={() => setCategory("น้ำหอม")}
+            className="group relative h-72 overflow-hidden rounded-2xl"
+          >
+            <img
+              src="https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=1000&q=80"
+              alt="Perfume"
+              className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
             />
 
             <div className="absolute inset-0 bg-black/30" />
 
             <div className="absolute bottom-7 left-7 text-white">
-              <p>COLLECTION</p>
-
-              <h3 className="text-3xl font-bold">
+              <p className="text-sm tracking-widest">COLLECTION</p>
+              <h3 className="mt-1 text-3xl font-semibold">
                 น้ำหอม
               </h3>
-
-              <p className="mt-2">
-                ค้นหากลิ่นที่เป็นตัวคุณ →
-              </p>
             </div>
+          </a>
 
-          </div>
-
-          {/* Gucci Bloom */}
-          <div className="relative h-72 overflow-hidden rounded-3xl">
-
-            <Image
-              src="/products/gucci3.jpg"
-              alt="Gucci Bloom"
-              fill
-              className="object-cover"
+          {/* Bag */}
+          <a
+            href="#products"
+            onClick={() => setCategory("กระเป๋า")}
+            className="group relative h-72 overflow-hidden rounded-2xl"
+          >
+            <img
+              src="https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=1000&q=80"
+              alt="Luxury bag"
+              className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
             />
 
-            <div className="absolute inset-0 bg-black/25" />
+            <div className="absolute inset-0 bg-black/30" />
 
             <div className="absolute bottom-7 left-7 text-white">
-              <p>NEW ARRIVAL</p>
-
-              <h3 className="text-3xl font-bold">
-                Gucci Bloom
+              <p className="text-sm tracking-widest">COLLECTION</p>
+              <h3 className="mt-1 text-3xl font-semibold">
+                กระเป๋า
               </h3>
-
-              <p className="mt-2">
-                คอลเลกชันใหม่ →
-              </p>
             </div>
-
-          </div>
+          </a>
 
         </div>
       </section>
@@ -166,63 +213,88 @@ export default function Home() {
       {/* Products */}
       <section
         id="products"
-        className="mx-auto max-w-7xl px-5 pb-20"
+        className="mx-auto max-w-7xl px-5 py-10"
       >
+        <div className="flex flex-col justify-between gap-5 md:flex-row md:items-end">
 
-        <div className="mb-8">
-          <p className="text-sm tracking-[0.25em] text-[#a77b52]">
-            BEST SELLERS
-          </p>
+          <div>
+            <p className="text-xs font-semibold tracking-[0.3em] text-amber-700">
+              OUR PRODUCTS
+            </p>
 
-          <h2 className="mt-2 text-3xl font-bold">
-            สินค้าแนะนำ
-          </h2>
+            <h2 className="mt-2 text-3xl font-semibold">
+              สินค้าแนะนำ
+            </h2>
+          </div>
+
+          {/* Filter */}
+          <div className="flex gap-2">
+            {["ทั้งหมด", "น้ำหอม", "กระเป๋า"].map((item) => (
+              <button
+                key={item}
+                onClick={() => setCategory(item)}
+                className={`rounded-full px-5 py-2 text-sm transition ${
+                  category === item
+                    ? "bg-black text-white"
+                    : "bg-white hover:bg-zinc-200"
+                }`}
+              >
+                {item}
+              </button>
+            ))}
+          </div>
+
         </div>
 
-        <div className="grid grid-cols-2 gap-5 md:grid-cols-3">
+        {/* Product Grid */}
+        <div className="mt-8 grid grid-cols-2 gap-4 md:grid-cols-4">
 
-          {products.map((product) => (
+          {filteredProducts.map((product) => (
             <div
-              key={product.name}
-              className="overflow-hidden rounded-2xl bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl"
+              key={product.id}
+              className="group overflow-hidden rounded-2xl bg-white"
             >
 
-              {/* รูปสินค้า */}
-              <div className="relative aspect-[4/5] bg-[#eee]">
+              {/* Product Image */}
+              <div className="relative aspect-square overflow-hidden bg-zinc-100">
 
-                <Image
+                <img
                   src={product.image}
                   alt={product.name}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 50vw, 33vw"
+                  className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
                 />
 
+                <button className="absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-lg shadow-sm">
+                  ♡
+                </button>
+
+                <span className="absolute left-3 top-3 rounded-full bg-black px-3 py-1 text-[10px] text-white">
+                  NEW
+                </span>
               </div>
 
-              {/* รายละเอียด */}
+              {/* Product Information */}
               <div className="p-4">
 
-                <span className="text-xs text-[#a77b52]">
+                <p className="text-xs text-zinc-500">
                   {product.category}
-                </span>
+                </p>
 
-                <h3 className="mt-1 font-semibold">
+                <h3 className="mt-1 line-clamp-1 font-medium">
                   {product.name}
                 </h3>
 
-                <div className="mt-2 flex items-center justify-between">
+                <div className="mt-3 flex items-center justify-between">
 
-                  <span className="font-bold">
+                  <p className="font-semibold">
                     {product.price}
-                  </span>
+                  </p>
 
-                  <button className="rounded-full bg-black px-4 py-2 text-sm text-white">
+                  <button className="rounded-full bg-zinc-900 px-3 py-2 text-xs text-white transition hover:bg-amber-700">
                     เพิ่มลงตะกร้า
                   </button>
 
                 </div>
-
               </div>
 
             </div>
@@ -231,17 +303,133 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t bg-white py-10 text-center">
-        <h2 className="font-bold tracking-[0.2em]">
-          LUMIÈRE
-        </h2>
+      {/* Promotion */}
+      <section
+        id="promotion"
+        className="mx-auto max-w-7xl px-5 py-16"
+      >
+        <div className="overflow-hidden rounded-3xl bg-black text-white">
 
-        <p className="mt-3 text-sm text-gray-500">
-          Luxury Perfume & Fashion Bag
-        </p>
+          <div className="grid items-center md:grid-cols-2">
+
+            <div className="px-8 py-14 md:px-14">
+              <p className="text-sm tracking-[0.3em] text-amber-400">
+                SPECIAL OFFER
+              </p>
+
+              <h2 className="mt-4 text-4xl font-semibold">
+                ลดสูงสุด 30%
+              </h2>
+
+              <p className="mt-4 leading-7 text-zinc-300">
+                โปรโมชั่นพิเศษสำหรับลูกค้าใหม่
+                เมื่อสั่งซื้อสินค้าครั้งแรก
+              </p>
+
+              <button className="mt-7 rounded-full bg-white px-7 py-3 text-sm font-medium text-black hover:bg-zinc-200">
+                ช้อปเลย
+              </button>
+            </div>
+
+            <div className="h-80">
+              <img
+                src="https://images.unsplash.com/photo-1523170335258-f5ed11844a49?auto=format&fit=crop&w=1000&q=80"
+                alt="Luxury shopping"
+                className="h-full w-full object-cover"
+              />
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* Features */}
+      <section className="border-y border-black/5 bg-white">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 px-5 py-12 md:grid-cols-3">
+
+          <div className="text-center">
+            <div className="text-3xl">🚚</div>
+            <h3 className="mt-3 font-semibold">
+              จัดส่งรวดเร็ว
+            </h3>
+            <p className="mt-1 text-sm text-zinc-500">
+              จัดส่งทั่วประเทศ
+            </p>
+          </div>
+
+          <div className="text-center">
+            <div className="text-3xl">✨</div>
+            <h3 className="mt-3 font-semibold">
+              สินค้าคุณภาพ
+            </h3>
+            <p className="mt-1 text-sm text-zinc-500">
+              คัดสรรสินค้าอย่างพิถีพิถัน
+            </p>
+          </div>
+
+          <div className="text-center">
+            <div className="text-3xl">🔒</div>
+            <h3 className="mt-3 font-semibold">
+              ชำระเงินปลอดภัย
+            </h3>
+            <p className="mt-1 text-sm text-zinc-500">
+              ระบบชำระเงินที่ปลอดภัย
+            </p>
+          </div>
+
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-[#171717] px-5 py-12 text-white">
+
+        <div className="mx-auto grid max-w-7xl gap-10 md:grid-cols-3">
+
+          <div>
+            <h2 className="text-2xl font-bold tracking-[0.25em]">
+              LUMIÈRE
+            </h2>
+
+            <p className="mt-4 max-w-sm text-sm leading-6 text-zinc-400">
+              ร้านค้าออนไลน์สำหรับน้ำหอมและกระเป๋า
+              สไตล์เรียบหรู เหมาะสำหรับทุกโอกาส
+            </p>
+          </div>
+
+          <div>
+            <h3 className="font-semibold">
+              เมนู
+            </h3>
+
+            <div className="mt-4 space-y-3 text-sm text-zinc-400">
+              <p>หน้าแรก</p>
+              <p>น้ำหอม</p>
+              <p>กระเป๋า</p>
+              <p>โปรโมชั่น</p>
+            </div>
+          </div>
+
+          <div>
+            <h3 className="font-semibold">
+              ติดต่อเรา
+            </h3>
+
+            <div className="mt-4 space-y-3 text-sm text-zinc-400">
+              <p>📞 099-999-9999</p>
+              <p>✉️ hello@lumiere.com</p>
+              <p>📍 Sukhothai, Thailand</p>
+            </div>
+          </div>
+
+        </div>
+
+        <div className="mx-auto mt-10 max-w-7xl border-t border-white/10 pt-6 text-center text-xs text-zinc-500">
+          © 2026 LUMIÈRE. All rights reserved.
+        </div>
+
       </footer>
 
-    </main>
+    </div>
   );
 }
+```
