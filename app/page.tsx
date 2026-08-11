@@ -1,41 +1,28 @@
 import Image from "next/image";
-
 const products = [
   {
-    name: "Chanel No. 5",
+    name: "Gucci Bloom",
     category: "น้ำหอม",
     price: "฿4,990",
-    image: "/products/perfume.jpg",
+    image: "/products/gucci-bloom-1.webp",
   },
   {
-    name: "Luxury Black Bag",
-    category: "กระเป๋า",
-    price: "฿2,590",
-    image: "/products/bag.jpg",
-  },
-  {
-    name: "Rose Elegant",
+    name: "Gucci Bloom Floral",
     category: "น้ำหอม",
-    price: "฿1,890",
-    image: "/products/perfume2.jpg",
+    price: "฿3,990",
+    image: "/products/gucci-bloom-2.jpg",
   },
   {
-    name: "Classic Leather Bag",
-    category: "กระเป๋า",
-    price: "฿3,290",
-    image: "/products/bag2.jpg",
-  },
-  {
-    name: "Golden Luxury",
+    name: "Gucci Bloom Eau de Toilette",
     category: "น้ำหอม",
-    price: "฿2,490",
-    image: "/products/perfume3.jpg",
+    price: "฿4,290",
+    image: "/products/gucci-bloom-3.jpg",
   },
   {
-    name: "Mini Fashion Bag",
-    category: "กระเป๋า",
-    price: "฿1,990",
-    image: "/products/bag3.jpg",
+    name: "Gucci Bloom Collection",
+    category: "น้ำหอม",
+    price: "฿5,490",
+    image: "/products/gucci-bloom-1.webp",
   },
 ];
 
@@ -110,14 +97,14 @@ export default function Home() {
         <div className="relative min-h-[500px] overflow-hidden rounded-[2rem] bg-[#d8c8ba]">
 
           {/* ใช้รูปจาก public */}
-          <Image
-            src="/products/perfume3.jpg"
-            alt="Luxury perfume"
-            fill
-            priority
-            className="object-cover"
-            sizes="100vw"
-          />
+         <Image
+  src="/products/gucci-bloom-1.webp"
+  alt="Gucci Bloom น้ำหอม"
+  fill
+  priority
+  className="object-cover"
+  sizes="100vw"
+/>
 
           {/* Overlay */}
           <div className="absolute inset-0 bg-black/45" />
@@ -190,13 +177,13 @@ export default function Home() {
             className="group relative h-80 overflow-hidden rounded-3xl"
           >
 
-            <Image
-              src="/products/perfume.jpg"
-              alt="น้ำหอม"
-              fill
-              className="object-cover transition duration-500 group-hover:scale-105"
-              sizes="50vw"
-            />
+           <Image
+  src="/products/gucci-bloom-2.jpg"
+  alt="Gucci Bloom น้ำหอม"
+  fill
+  className="object-cover transition duration-500 group-hover:scale-105"
+  sizes="50vw"
+/>
 
             <div className="absolute inset-0 bg-black/35" />
 
