@@ -1,3 +1,35 @@
+import React from "react";
+
+export default function FoodHeroSection() {
+  return (
+    <div className="relative w-full h-[400px] md:h-[500px] bg-gray-900 flex items-center justify-center overflow-hidden rounded-b-3xl shadow-lg mb-8">
+      {/* พื้นหลังรูปอาหาร */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center opacity-60 transition-transform duration-1000 hover:scale-105"
+        style={{ backgroundImage: "url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1920&q=80')" }}
+      ></div>
+      
+      {/* เลเยอร์สีดำโปร่งแสงเพื่อให้ข้อความโดดเด่น */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+
+      {/* เนื้อหาข้อความ */}
+      <div className="relative z-10 text-center px-6 mt-10">
+        <span className="bg-orange-500 text-white px-4 py-1 rounded-full text-sm font-semibold mb-4 inline-block shadow-md">
+          เมนูใหม่มาแรง 🔥
+        </span>
+        <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 drop-shadow-lg tracking-wide">
+          อร่อยฟิน <span className="text-orange-400">ทุกคำที่จัดส่ง</span>
+        </h1>
+        <p className="text-lg md:text-xl text-gray-200 mb-8 max-w-2xl mx-auto drop-shadow-md">
+          สัมผัสประสบการณ์ความอร่อยกับเมนูพรีเมียมที่เราคัดสรรมาเพื่อคุณโดยเฉพาะ วัตถุดิบสดใหม่ พร้อมเสิร์ฟถึงหน้าบ้าน
+        </p>
+        <button className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-8 rounded-full shadow-lg transform transition hover:-translate-y-1 hover:shadow-orange-500/50">
+          ดูเมนูทั้งหมดเลย 👇
+        </button>
+      </div>
+    </div>
+  );
+}
 "use client";
 
 import React, { useState } from "react";
