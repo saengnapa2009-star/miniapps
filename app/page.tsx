@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 
 const foods = [
   {
@@ -17,7 +17,7 @@ const foods = [
   },
   {
     id: 3,
-    name: "เบอร์เกอร์ชีส",
+    name: "ซูชิญี่ปุ่น",
     price: 159,
     image: "https://images.unsplash.com/photo-1572802419224-296b0aeee0d9?auto=format&fit=crop&w=800&q=80",
   },
@@ -35,6 +35,13 @@ export default function Home() {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+
+  // สร้างตัวอ้างอิงตำแหน่งสำหรับเลื่อนหน้าจอไปที่ตะกร้า
+  const cartRef = useRef<HTMLDivElement>(null);
+
+  const scrollToCart = () => {
+    cartRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
 
   const addToCart = (product: typeof foods[0]) => {
     setCart((prevCart) => {
@@ -55,13 +62,12 @@ export default function Home() {
   const totalPrice = cart.reduce((total, item) => total + item.price * item.quantity, 0);
   const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
 
-  // ฟังก์ชันกดยืนยันสั่งซื้อ
   const handleConfirmOrder = () => {
     setIsSuccess(true);
     setTimeout(() => {
       setIsSuccess(false);
       setIsCheckoutOpen(false);
-      setCart([]); // ล้างตะกร้าหลังสั่งซื้อสำเร็จ
+      setCart([]);
     }, 2500);
   };
 
@@ -108,9 +114,13 @@ export default function Home() {
               className="outline-none text-gray-700 text-sm px-2 py-1 w-32 md:w-48 bg-transparent" 
             />
           </div>
-          <div className="bg-orange-500 text-white px-4 py-2 rounded-lg font-semibold flex items-center gap-2 shadow-md">
+          {/* ปุ่มตะกร้าสินค้าที่คลิกแล้วเลื่อนไปหน้าตะกร้าด้านล่าง */}
+          <button 
+            onClick={scrollToCart}
+            className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg font-semibold flex items-center gap-2 shadow-md transition transform active:scale-95 cursor-pointer"
+          >
             🛒 ตะกร้าของฉัน ({totalItems})
-          </div>
+          </button>
         </div>
       </nav>
 
@@ -134,8 +144,8 @@ export default function Home() {
         </div>
       </div>
 
-      {/* 4. ส่วนของร้านค้าและตะกร้า */}
-      <main className="max-w-6xl mx-auto p-4 md:p-8 mt-6">
+      {/* 4. ส่วนของร้านค้าและตะกร้า (ใส่ ref ไว้ตรงนี้เพื่อให้กดปุ่มแล้วเลื่อนมาถึง) */}
+      <main ref={cartRef} className="max-w-6xl mx-auto p-4 md:p-8 mt-6 pt-10">
         <div className="text-center mb-10">
           <h2 className="text-3xl font-bold text-gray-800">เมนูแนะนำของเรา</h2>
           <p className="text-gray-500 mt-2">เลือกเมนูโปรดแล้วกดใส่ตะกร้าได้เลยจ้า</p>
