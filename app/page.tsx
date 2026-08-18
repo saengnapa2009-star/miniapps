@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 
-// ข้อมูลสินค้าอาหาร
 const foods = [
   {
     id: 1,
@@ -34,8 +33,9 @@ type CartItem = {
 
 export default function Home() {
   const [cart, setCart] = useState<CartItem[]>([]);
+  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
 
-  // ฟังก์ชันเพิ่มสินค้าลงตะกร้า
   const addToCart = (product: typeof foods[0]) => {
     setCart((prevCart) => {
       const existingItem = prevCart.find((item) => item.id === product.id);
@@ -48,13 +48,22 @@ export default function Home() {
     });
   };
 
-  // ฟังก์ชันลบสินค้าออกจากตะกร้า
   const removeFromCart = (id: number) => {
     setCart((prevCart) => prevCart.filter((item) => item.id !== id));
   };
 
   const totalPrice = cart.reduce((total, item) => total + item.price * item.quantity, 0);
   const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+
+  // ฟังก์ชันกดยืนยันสั่งซื้อ
+  const handleConfirmOrder = () => {
+    setIsSuccess(true);
+    setTimeout(() => {
+      setIsSuccess(false);
+      setIsCheckoutOpen(false);
+      setCart([]); // ล้างตะกร้าหลังสั่งซื้อสำเร็จ
+    }, 2500);
+  };
 
   return (
     <div className="min-h-screen relative font-sans bg-gray-50">
@@ -70,14 +79,14 @@ export default function Home() {
           </span>
         </div>
         <div className="flex gap-2">
-          <a href="#" className="w-6 h-6 bg-red-600 rounded-full flex items-center justify-center hover:bg-red-500 transition text-white">f</a>
-          <a href="#" className="w-6 h-6 bg-red-600 rounded-full flex items-center justify-center hover:bg-red-500 transition text-white">t</a>
-          <a href="#" className="w-6 h-6 bg-red-600 rounded-full flex items-center justify-center hover:bg-red-500 transition text-white">ig</a>
-          <a href="#" className="w-6 h-6 bg-red-600 rounded-full flex items-center justify-center hover:bg-red-500 transition text-white">yt</a>
+          <a href="#" className="w-6 h-6 bg-red-600 rounded-full flex items-center justify-center text-white">f</a>
+          <a href="#" className="w-6 h-6 bg-red-600 rounded-full flex items-center justify-center text-white">t</a>
+          <a href="#" className="w-6 h-6 bg-red-600 rounded-full flex items-center justify-center text-white">ig</a>
+          <a href="#" className="w-6 h-6 bg-red-600 rounded-full flex items-center justify-center text-white">yt</a>
         </div>
       </div>
 
-      {/* 2. Navigation Bar (แถบเมนูโปร่งแสงทับรูป) */}
+      {/* 2. Navigation Bar */}
       <nav className="absolute top-10 w-full z-20 flex flex-col md:flex-row items-center justify-between px-4 md:px-12 py-4 bg-gradient-to-b from-black/80 to-transparent">
         <div className="text-3xl md:text-4xl font-serif font-bold text-white tracking-widest mb-4 md:mb-0 drop-shadow-md">
           FOODIE<span className="text-red-600">SHOP</span>
@@ -99,22 +108,19 @@ export default function Home() {
               className="outline-none text-gray-700 text-sm px-2 py-1 w-32 md:w-48 bg-transparent" 
             />
           </div>
-          {/* ปุ่มตะกร้าสินค้าบน Nav */}
           <div className="bg-orange-500 text-white px-4 py-2 rounded-lg font-semibold flex items-center gap-2 shadow-md">
             🛒 ตะกร้าของฉัน ({totalItems})
           </div>
         </div>
       </nav>
 
-      {/* 3. Hero Section (พื้นหลังรูปอาหารเต็มจอ สไตล์ EXION) */}
+      {/* 3. Hero Section */}
       <div className="relative h-[85vh] w-full">
         <div 
           className="absolute inset-0 bg-cover bg-center"
           style={{ backgroundImage: "url('https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=1920&q=80')" }}
         ></div>
-        
         <div className="absolute inset-0 bg-black/40"></div>
-
         <div className="relative z-10 flex flex-col justify-center h-full px-6 md:px-24">
           <h1 className="text-6xl md:text-8xl font-extrabold text-white leading-tight drop-shadow-xl tracking-tight">
             WE ARE <br/> DELICIOUS
@@ -128,7 +134,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* 4. ส่วนของร้านค้าและตะกร้า (จากรูปที่ 38) */}
+      {/* 4. ส่วนของร้านค้าและตะกร้า */}
       <main className="max-w-6xl mx-auto p-4 md:p-8 mt-6">
         <div className="text-center mb-10">
           <h2 className="text-3xl font-bold text-gray-800">เมนูแนะนำของเรา</h2>
@@ -158,7 +164,7 @@ export default function Home() {
             ))}
           </div>
 
-          {/* สรุปคำสั่งซื้อ (ตะกร้าสินค้าด้านข้าง) */}
+          {/* สรุปคำสั่งซื้อ */}
           <div className="w-full lg:w-80 bg-white p-6 rounded-2xl shadow-lg border border-gray-100 h-fit">
             <h3 className="text-xl font-bold mb-4 border-b pb-3 text-gray-800">สรุปคำสั่งซื้อ</h3>
             
@@ -193,6 +199,7 @@ export default function Home() {
               </div>
               <button 
                 disabled={cart.length === 0}
+                onClick={() => setIsCheckoutOpen(true)}
                 className={`w-full py-3.5 rounded-xl font-bold text-white shadow-md transition ${cart.length === 0 ? 'bg-gray-300 cursor-not-allowed' : 'bg-green-500 hover:bg-green-600'}`}
               >
                 ชำระเงินเลย
@@ -202,6 +209,66 @@ export default function Home() {
 
         </div>
       </main>
+
+      {/* Modal หน้าต่างชำระเงิน */}
+      {isCheckoutOpen && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl animate-scaleIn">
+            
+            {isSuccess ? (
+              <div className="text-center py-8">
+                <div className="w-16 h-16 bg-green-100 text-green-500 rounded-full flex items-center justify-center text-3xl mx-auto mb-4">
+                  ✓
+                </div>
+                <h3 className="text-2xl font-bold text-gray-800 mb-2">สั่งซื้อสำเร็จ!</h3>
+                <p className="text-gray-500">ขอบคุณที่ใช้บริการ FoodieShop จ้า</p>
+              </div>
+            ) : (
+              <div>
+                <div className="flex justify-between items-center border-b pb-3 mb-4">
+                  <h3 className="text-xl font-bold text-gray-800">ยืนยันการชำระเงิน</h3>
+                  <button 
+                    onClick={() => setIsCheckoutOpen(false)}
+                    className="text-gray-400 hover:text-gray-600 text-lg font-bold"
+                  >
+                    ✕
+                  </button>
+                </div>
+
+                <div className="space-y-3 mb-6 max-h-48 overflow-y-auto">
+                  {cart.map((item) => (
+                    <div key={item.id} className="flex justify-between text-sm">
+                      <span className="text-gray-600">{item.name} (x{item.quantity})</span>
+                      <span className="font-semibold text-gray-800">฿{item.price * item.quantity}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="bg-gray-50 p-4 rounded-xl mb-6 flex justify-between items-center">
+                  <span className="font-semibold text-gray-700">ยอดชำระสุทธิ</span>
+                  <span className="text-2xl font-bold text-orange-600">฿{totalPrice}</span>
+                </div>
+
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => setIsCheckoutOpen(false)}
+                    className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 py-3 rounded-xl font-semibold transition"
+                  >
+                    ยกเลิก
+                  </button>
+                  <button
+                    onClick={handleConfirmOrder}
+                    className="flex-1 bg-green-500 hover:bg-green-600 text-white py-3 rounded-xl font-semibold shadow-md transition"
+                  >
+                    ยืนยันการโอนเงิน
+                  </button>
+                </div>
+              </div>
+            )}
+
+          </div>
+        </div>
+      )}
 
     </div>
   );
