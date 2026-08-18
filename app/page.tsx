@@ -30,6 +30,7 @@ export default function FoodHeroSection() {
     </div>
   );
 }
+
 "use client";
 
 import React, { useState } from "react";
