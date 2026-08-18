@@ -17,7 +17,7 @@ const foods = [
   },
   {
     id: 3,
-    name: "ซูชิญี่ปุ่น",
+    name: "เบอร์เกอร์ชีส",
     price: 159,
     image: "https://images.unsplash.com/photo-1572802419224-296b0aeee0d9?auto=format&fit=crop&w=800&q=80",
   },
