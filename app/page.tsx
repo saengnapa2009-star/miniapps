@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 
 const foods = [
   {
@@ -33,15 +33,9 @@ type CartItem = {
 
 export default function Home() {
   const [cart, setCart] = useState<CartItem[]>([]);
+  const [searchQuery, setSearchQuery] = useState("");
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-
-  // สร้างตัวอ้างอิงตำแหน่งสำหรับเลื่อนหน้าจอไปที่ตะกร้า
-  const cartRef = useRef<HTMLDivElement>(null);
-
-  const scrollToCart = () => {
-    cartRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
 
   const addToCart = (product: typeof foods[0]) => {
     setCart((prevCart) => {
@@ -61,6 +55,11 @@ export default function Home() {
 
   const totalPrice = cart.reduce((total, item) => total + item.price * item.quantity, 0);
   const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+
+  // กรองรายการสินค้าตามคำค้นหา
+  const filteredFoods = foods.filter((food) =>
+    food.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   const handleConfirmOrder = () => {
     setIsSuccess(true);
@@ -107,20 +106,27 @@ export default function Home() {
         </div>
 
         <div className="flex items-center gap-4">
-          <div className="bg-white flex items-center px-2 py-1 rounded-sm shadow-inner">
+          {/* ช่องค้นหาเมนูทำงานได้จริง */}
+          <div className="bg-white flex items-center px-2 py-1 rounded-sm shadow-inner relative">
             <input 
               type="text" 
               placeholder="Search menu..." 
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               className="outline-none text-gray-700 text-sm px-2 py-1 w-32 md:w-48 bg-transparent" 
             />
+            {searchQuery && (
+              <button 
+                onClick={() => setSearchQuery("")}
+                className="text-gray-400 hover:text-gray-600 text-xs px-1 font-bold"
+              >
+                ✕
+              </button>
+            )}
           </div>
-          {/* ปุ่มตะกร้าสินค้าที่คลิกแล้วเลื่อนไปหน้าตะกร้าด้านล่าง */}
-          <button 
-            onClick={scrollToCart}
-            className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg font-semibold flex items-center gap-2 shadow-md transition transform active:scale-95 cursor-pointer"
-          >
+          <div className="bg-orange-500 text-white px-4 py-2 rounded-lg font-semibold flex items-center gap-2 shadow-md">
             🛒 ตะกร้าของฉัน ({totalItems})
-          </button>
+          </div>
         </div>
       </nav>
 
@@ -144,34 +150,50 @@ export default function Home() {
         </div>
       </div>
 
-      {/* 4. ส่วนของร้านค้าและตะกร้า (ใส่ ref ไว้ตรงนี้เพื่อให้กดปุ่มแล้วเลื่อนมาถึง) */}
-      <main ref={cartRef} className="max-w-6xl mx-auto p-4 md:p-8 mt-6 pt-10">
+      {/* 4. ส่วนของร้านค้าและตะกร้า */}
+      <main className="max-w-6xl mx-auto p-4 md:p-8 mt-6">
         <div className="text-center mb-10">
           <h2 className="text-3xl font-bold text-gray-800">เมนูแนะนำของเรา</h2>
-          <p className="text-gray-500 mt-2">เลือกเมนูโปรดแล้วกดใส่ตะกร้าได้เลยจ้า</p>
+          <p className="text-gray-500 mt-2">
+            {searchQuery ? `ผลการค้นหาสำหรับ: "${searchQuery}"` : "เลือกเมนูโปรดแล้วกดใส่ตะกร้าได้เลยจ้า"}
+          </p>
         </div>
 
         <div className="flex flex-col lg:flex-row gap-8">
           
-          {/* รายการสินค้า */}
-          <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-            {foods.map((food) => (
-              <div key={food.id} className="bg-white rounded-xl shadow-md hover:shadow-lg transition overflow-hidden border border-gray-100 flex flex-col">
-                <img src={food.image} alt={food.name} className="w-full h-48 object-cover" />
-                <div className="p-4 flex flex-col flex-1">
-                  <h3 className="text-lg font-semibold text-gray-800 line-clamp-1">{food.name}</h3>
-                  <p className="text-orange-500 font-bold text-xl mt-2 mb-4">฿{food.price}</p>
-                  <div className="mt-auto">
-                    <button
-                      onClick={() => addToCart(food)}
-                      className="w-full bg-orange-500 text-white py-2.5 rounded-lg font-semibold hover:bg-orange-600 active:bg-orange-700 transition shadow"
-                    >
-                      ใส่ตะกร้า
-                    </button>
-                  </div>
-                </div>
+          {/* รายการสินค้าที่ผ่านการกรองจากการค้นหา */}
+          <div className="flex-1">
+            {filteredFoods.length === 0 ? (
+              <div className="bg-white rounded-xl p-12 text-center shadow-sm border border-gray-100">
+                <p className="text-gray-400 text-lg">ไม่พบเมนูที่คุณค้นหา</p>
+                <button 
+                  onClick={() => setSearchQuery("")}
+                  className="mt-4 text-orange-500 font-semibold hover:underline"
+                >
+                  ดูเมนูทั้งหมด
+                </button>
               </div>
-            ))}
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                {filteredFoods.map((food) => (
+                  <div key={food.id} className="bg-white rounded-xl shadow-md hover:shadow-lg transition overflow-hidden border border-gray-100 flex flex-col">
+                    <img src={food.image} alt={food.name} className="w-full h-48 object-cover" />
+                    <div className="p-4 flex flex-col flex-1">
+                      <h3 className="text-lg font-semibold text-gray-800 line-clamp-1">{food.name}</h3>
+                      <p className="text-orange-500 font-bold text-xl mt-2 mb-4">฿{food.price}</p>
+                      <div className="mt-auto">
+                        <button
+                          onClick={() => addToCart(food)}
+                          className="w-full bg-orange-500 text-white py-2.5 rounded-lg font-semibold hover:bg-orange-600 active:bg-orange-700 transition shadow"
+                        >
+                          ใส่ตะกร้า
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* สรุปคำสั่งซื้อ */}
@@ -223,8 +245,7 @@ export default function Home() {
       {/* Modal หน้าต่างชำระเงิน */}
       {isCheckoutOpen && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl animate-scaleIn">
-            
+          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl">
             {isSuccess ? (
               <div className="text-center py-8">
                 <div className="w-16 h-16 bg-green-100 text-green-500 rounded-full flex items-center justify-center text-3xl mx-auto mb-4">
@@ -275,7 +296,6 @@ export default function Home() {
                 </div>
               </div>
             )}
-
           </div>
         </div>
       )}
