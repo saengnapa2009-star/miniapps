@@ -33,7 +33,7 @@ type CartItem = {
 
 export default function Home() {
   const [cart, setCart] = useState<CartItem[]>([]);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [isCartModalOpen, setIsCartModalOpen] = useState(false);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
@@ -56,16 +56,12 @@ export default function Home() {
   const totalPrice = cart.reduce((total, item) => total + item.price * item.quantity, 0);
   const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
 
-  // กรองรายการสินค้าตามคำค้นหา
-  const filteredFoods = foods.filter((food) =>
-    food.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
   const handleConfirmOrder = () => {
     setIsSuccess(true);
     setTimeout(() => {
       setIsSuccess(false);
       setIsCheckoutOpen(false);
+      setIsCartModalOpen(false);
       setCart([]);
     }, 2500);
   };
@@ -106,27 +102,20 @@ export default function Home() {
         </div>
 
         <div className="flex items-center gap-4">
-          {/* ช่องค้นหาเมนูทำงานได้จริง */}
-          <div className="bg-white flex items-center px-2 py-1 rounded-sm shadow-inner relative">
+          <div className="bg-white flex items-center px-2 py-1 rounded-sm shadow-inner">
             <input 
               type="text" 
               placeholder="Search menu..." 
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
               className="outline-none text-gray-700 text-sm px-2 py-1 w-32 md:w-48 bg-transparent" 
             />
-            {searchQuery && (
-              <button 
-                onClick={() => setSearchQuery("")}
-                className="text-gray-400 hover:text-gray-600 text-xs px-1 font-bold"
-              >
-                ✕
-              </button>
-            )}
           </div>
-          <div className="bg-orange-500 text-white px-4 py-2 rounded-lg font-semibold flex items-center gap-2 shadow-md">
+          {/* ปุ่มตะกร้าด้านบนที่คลิกเปิด Modal ได้ */}
+          <button 
+            onClick={() => setIsCartModalOpen(true)}
+            className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg font-semibold flex items-center gap-2 shadow-md transition cursor-pointer"
+          >
             🛒 ตะกร้าของฉัน ({totalItems})
-          </div>
+          </button>
         </div>
       </nav>
 
@@ -154,49 +143,33 @@ export default function Home() {
       <main className="max-w-6xl mx-auto p-4 md:p-8 mt-6">
         <div className="text-center mb-10">
           <h2 className="text-3xl font-bold text-gray-800">เมนูแนะนำของเรา</h2>
-          <p className="text-gray-500 mt-2">
-            {searchQuery ? `ผลการค้นหาสำหรับ: "${searchQuery}"` : "เลือกเมนูโปรดแล้วกดใส่ตะกร้าได้เลยจ้า"}
-          </p>
+          <p className="text-gray-500 mt-2">เลือกเมนูโปรดแล้วกดใส่ตะกร้าได้เลยจ้า</p>
         </div>
 
         <div className="flex flex-col lg:flex-row gap-8">
           
-          {/* รายการสินค้าที่ผ่านการกรองจากการค้นหา */}
-          <div className="flex-1">
-            {filteredFoods.length === 0 ? (
-              <div className="bg-white rounded-xl p-12 text-center shadow-sm border border-gray-100">
-                <p className="text-gray-400 text-lg">ไม่พบเมนูที่คุณค้นหา</p>
-                <button 
-                  onClick={() => setSearchQuery("")}
-                  className="mt-4 text-orange-500 font-semibold hover:underline"
-                >
-                  ดูเมนูทั้งหมด
-                </button>
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                {filteredFoods.map((food) => (
-                  <div key={food.id} className="bg-white rounded-xl shadow-md hover:shadow-lg transition overflow-hidden border border-gray-100 flex flex-col">
-                    <img src={food.image} alt={food.name} className="w-full h-48 object-cover" />
-                    <div className="p-4 flex flex-col flex-1">
-                      <h3 className="text-lg font-semibold text-gray-800 line-clamp-1">{food.name}</h3>
-                      <p className="text-orange-500 font-bold text-xl mt-2 mb-4">฿{food.price}</p>
-                      <div className="mt-auto">
-                        <button
-                          onClick={() => addToCart(food)}
-                          className="w-full bg-orange-500 text-white py-2.5 rounded-lg font-semibold hover:bg-orange-600 active:bg-orange-700 transition shadow"
-                        >
-                          ใส่ตะกร้า
-                        </button>
-                      </div>
-                    </div>
+          {/* รายการสินค้า */}
+          <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            {foods.map((food) => (
+              <div key={food.id} className="bg-white rounded-xl shadow-md hover:shadow-lg transition overflow-hidden border border-gray-100 flex flex-col">
+                <img src={food.image} alt={food.name} className="w-full h-48 object-cover" />
+                <div className="p-4 flex flex-col flex-1">
+                  <h3 className="text-lg font-semibold text-gray-800 line-clamp-1">{food.name}</h3>
+                  <p className="text-orange-500 font-bold text-xl mt-2 mb-4">฿{food.price}</p>
+                  <div className="mt-auto">
+                    <button
+                      onClick={() => addToCart(food)}
+                      className="w-full bg-orange-500 text-white py-2.5 rounded-lg font-semibold hover:bg-orange-600 active:bg-orange-700 transition shadow cursor-pointer"
+                    >
+                      ใส่ตะกร้า
+                    </button>
                   </div>
-                ))}
+                </div>
               </div>
-            )}
+            ))}
           </div>
 
-          {/* สรุปคำสั่งซื้อ */}
+          {/* สรุปคำสั่งซื้อด้านข้าง */}
           <div className="w-full lg:w-80 bg-white p-6 rounded-2xl shadow-lg border border-gray-100 h-fit">
             <h3 className="text-xl font-bold mb-4 border-b pb-3 text-gray-800">สรุปคำสั่งซื้อ</h3>
             
@@ -214,7 +187,7 @@ export default function Home() {
                       <p className="font-bold text-orange-500 text-sm">฿{item.price * item.quantity}</p>
                       <button 
                         onClick={() => removeFromCart(item.id)}
-                        className="text-red-500 hover:text-red-700 text-xs font-bold bg-red-100 hover:bg-red-200 px-2 py-1 rounded transition"
+                        className="text-red-500 hover:text-red-700 text-xs font-bold bg-red-100 hover:bg-red-200 px-2 py-1 rounded transition cursor-pointer"
                       >
                         ✕
                       </button>
@@ -232,7 +205,7 @@ export default function Home() {
               <button 
                 disabled={cart.length === 0}
                 onClick={() => setIsCheckoutOpen(true)}
-                className={`w-full py-3.5 rounded-xl font-bold text-white shadow-md transition ${cart.length === 0 ? 'bg-gray-300 cursor-not-allowed' : 'bg-green-500 hover:bg-green-600'}`}
+                className={`w-full py-3.5 rounded-xl font-bold text-white shadow-md transition ${cart.length === 0 ? 'bg-gray-300 cursor-not-allowed' : 'bg-green-500 hover:bg-green-600 cursor-pointer'}`}
               >
                 ชำระเงินเลย
               </button>
@@ -241,6 +214,75 @@ export default function Home() {
 
         </div>
       </main>
+
+      {/* Modal หน้าต่างตะกร้าสินค้า (เมื่อคลิกปุ่ม "ตะกร้าของฉัน" ด้านบน) */}
+      {isCartModalOpen && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl">
+            <div className="flex justify-between items-center border-b pb-3 mb-4">
+              <h3 className="text-xl font-bold text-gray-800">🛒 ตะกร้าสินค้าของคุณ</h3>
+              <button 
+                onClick={() => setIsCartModalOpen(false)}
+                className="text-gray-400 hover:text-gray-600 text-lg font-bold cursor-pointer"
+              >
+                ✕
+              </button>
+            </div>
+
+            {cart.length === 0 ? (
+              <p className="text-gray-400 text-center py-10">ยังไม่มีสินค้าในตะกร้า</p>
+            ) : (
+              <div className="space-y-3 max-h-60 overflow-y-auto pr-2">
+                {cart.map((item) => (
+                  <div key={item.id} className="flex justify-between items-center bg-gray-50 p-3 rounded-xl border border-gray-100">
+                    <div className="flex items-center gap-3">
+                      <img src={item.image} alt={item.name} className="w-12 h-12 object-cover rounded-lg" />
+                      <div>
+                        <p className="text-sm font-semibold text-gray-800">{item.name}</p>
+                        <p className="text-xs text-gray-500">฿{item.price} x {item.quantity}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <p className="font-bold text-orange-500">฿{item.price * item.quantity}</p>
+                      <button 
+                        onClick={() => removeFromCart(item.id)}
+                        className="text-red-500 bg-red-100 hover:bg-red-200 px-2 py-1 rounded text-xs font-bold transition cursor-pointer"
+                      >
+                        ลบ
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            <div className="mt-6 border-t pt-4">
+              <div className="flex justify-between items-center mb-6">
+                <span className="font-semibold text-gray-700">ยอดรวมทั้งสิ้น</span>
+                <span className="text-2xl font-bold text-orange-600">฿{totalPrice}</span>
+              </div>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setIsCartModalOpen(false)}
+                  className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 py-3 rounded-xl font-semibold transition cursor-pointer"
+                >
+                  เลือกซื้อต่อ
+                </button>
+                <button
+                  disabled={cart.length === 0}
+                  onClick={() => {
+                    setIsCartModalOpen(false);
+                    setIsCheckoutOpen(true);
+                  }}
+                  className={`flex-1 py-3 rounded-xl font-bold text-white shadow-md transition ${cart.length === 0 ? 'bg-gray-300 cursor-not-allowed' : 'bg-green-500 hover:bg-green-600 cursor-pointer'}`}
+                >
+                  ดำเนินการชำระเงิน
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Modal หน้าต่างชำระเงิน */}
       {isCheckoutOpen && (
@@ -260,7 +302,7 @@ export default function Home() {
                   <h3 className="text-xl font-bold text-gray-800">ยืนยันการชำระเงิน</h3>
                   <button 
                     onClick={() => setIsCheckoutOpen(false)}
-                    className="text-gray-400 hover:text-gray-600 text-lg font-bold"
+                    className="text-gray-400 hover:text-gray-600 text-lg font-bold cursor-pointer"
                   >
                     ✕
                   </button>
@@ -283,13 +325,13 @@ export default function Home() {
                 <div className="flex gap-3">
                   <button
                     onClick={() => setIsCheckoutOpen(false)}
-                    className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 py-3 rounded-xl font-semibold transition"
+                    className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 py-3 rounded-xl font-semibold transition cursor-pointer"
                   >
                     ยกเลิก
                   </button>
                   <button
                     onClick={handleConfirmOrder}
-                    className="flex-1 bg-green-500 hover:bg-green-600 text-white py-3 rounded-xl font-semibold shadow-md transition"
+                    className="flex-1 bg-green-500 hover:bg-green-600 text-white py-3 rounded-xl font-semibold shadow-md transition cursor-pointer"
                   >
                     ยืนยันการโอนเงิน
                   </button>
