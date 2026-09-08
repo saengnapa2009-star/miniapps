@@ -5,19 +5,19 @@ import React, { useState } from "react";
 const foods = [
   {
     id: 1,
-    name: "เบอร์เกอร์เนื้อพรีเมียม",
+    name: "เบอร์เกอร์เนื้อ",
     price: 129,
     image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: 2,
-    name: "พิซซ่าชีสเยิ้ม",
+    name: "พิซซ่าชีส",
     price: 199,
     image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: 3,
-    name: "ซูชิญี่ปุ่น",
+    name: "เบอร์เกอร์เนื้อไก่",
     price: 159,
     image: "https://images.unsplash.com/photo-1572802419224-296b0aeee0d9?auto=format&fit=crop&w=800&q=80",
   },
