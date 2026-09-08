@@ -26,7 +26,7 @@ const foods = [
   },
   {
     id: 4,
-    name: "สเต๊กเนื้อ",
+    name: "สตีสฟู้ดอินเดีย",
     price: 249,
     image:
       "https://images.unsplash.com/photo-1546833999-b9f581a1996d?auto=format&fit=crop&w=900&q=80",
